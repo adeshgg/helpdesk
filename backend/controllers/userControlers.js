@@ -5,7 +5,8 @@ const registerUser = (req, res) => {
   const { name, email, password } = req.body
 
   if (!name || !email || !password) {
-    res.status(400).json({ msg: 'Please include all the fields' })
+    res.status(400)
+    throw new Error('Please add all the fields')
   }
   res.send('Register user')
 }
