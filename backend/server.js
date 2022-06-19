@@ -9,6 +9,8 @@ app.get('/', (req, res) => {
   res.json({ msg: 'Hello, World!' })
 })
 
+app.use('/api/users', require('./routes/userRoutes'))
+
 app.listen(PORT, () => {
   console.log(`Server is spining at PORT : ${PORT}`)
 })
