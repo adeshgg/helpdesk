@@ -12,3 +12,11 @@ While using mongoose it returns a promise, so to handle error we need to either 
 try catch block if we are using async-await, But if we use this express-async-handler middleware it will pass the errors to our error handler
 
 To use it just import / require it & the wrap your contoller around it
+
+### JWT
+
+For autherization we will pass a token each time the users registers or login, (we'll use it later in the frontend)
+
+The jwt `sign()` take the id which has to be a part of the token a secret and a options object
+
+Since the token contains the user id, we will use it to protect and autherize routes in the frontend
