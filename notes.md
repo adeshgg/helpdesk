@@ -11,6 +11,8 @@ Now we'll add a new middleware
 While using mongoose it returns a promise, so to handle error we need to either use the `.catch()` or the
 try catch block if we are using async-await, But if we use this express-async-handler middleware it will pass the errors to our error handler
 
+Actually the express-async-handler, will send the error to the handle once it is thrown, therefore we still need to use the try catch block. Its just that, the error will be handled by our own custom error handler instead of the default express html webpage error
+
 To use it just import / require it & the wrap your contoller around it
 
 ### JWT
