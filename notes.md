@@ -86,3 +86,6 @@ Now we can use the React-Redux hooks to let React components interact with the R
 The `createAsyncThunk` function accepts a Redux action type string(you can name it anything) and a callback function that should return a promise.
 
 So we use it while creating async action function
+
+All the code for API (backend) interaction will be in the service file.
+Now the `register()` from the service file calls the API, and registers the user
