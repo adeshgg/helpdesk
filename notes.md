@@ -36,16 +36,15 @@ export const store = configureStore({
     auth: authReducer,
   },
 })
-
 ```
 
 ```jsx
 <Provider store={store}>
-      <App />
+  <App />
 </Provider>
 ```
 
-We can create a state using a slice, creating a slice requires a string name to identify the slice, an  initial state value, and one or more reducer functions to define how the state can be updated
+We can create a state using a slice, creating a slice requires a string name to identify the slice, an initial state value, and one or more reducer functions to define how the state can be updated
 
 ```js
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
@@ -62,18 +61,17 @@ export const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-      // Implement reducer logic like : 
-      increment: (state) => {
+    // Implement reducer logic like :
+    increment: state => {
       // In redux, there is not need to copy the state and return a new state, that is done under the hood using Immer library
       state.value += 1
     },
-    decrement: (state) => {
+    decrement: state => {
       state.value -= 1
     },
     incrementByAmount: (state, action) => {
       state.value += action.payload
     },
-      
   },
   extraReducers: builder => {},
 })
@@ -83,4 +81,8 @@ export default authSlice.reducer
 
 Finally export the reducer, and list it in the store
 
-Now we can use the React-Redux hooks to let React components interact  with the Redux store. We can read data from the store with `useSelector`, and dispatch actions using `useDispatch`
+Now we can use the React-Redux hooks to let React components interact with the Redux store. We can read data from the store with `useSelector`, and dispatch actions using `useDispatch`
+
+The `createAsyncThunk` function accepts a Redux action type string(you can name it anything) and a callback function that should return a promise.
+
+So we use it while creating async action function
