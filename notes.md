@@ -89,3 +89,9 @@ So we use it while creating async action function
 
 All the code for API (backend) interaction will be in the service file.
 Now the `register()` from the service file calls the API, and registers the user
+
+Handling errors (if any) :
+
+If you look at the `register()` from the `authSlice.js` file, it returns the response in case of success and returns the error message in case of failure. Now this return values are attached to the action as payload
+
+Also If you look at the Redux devtools, different promise states are being registered and we can access them in the `extraReducers` part of the authSlice object, and can change the state value of the store. Which will we used in the frontend
