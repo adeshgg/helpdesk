@@ -15,6 +15,29 @@ const getTickets = asyncHandler(async (req, res) => {
   res.status(200).json(tickets)
 })
 
+// @desc Return ticket by id
+// @route /api/tickets/:id
+// @access Private
+const getTicket = asyncHandler(async (req, res) => {
+  if (!req.user) {
+    res.status(401)
+    throw new Error('User not Found')
+  }
+
+  const ticket = await Ticket.findById(req.params.id)
+
+  if (!ticket) {
+    res.status(404)
+    throw new Error('Ticket Not Found')
+  }
+
+  if (ticket.user.toString() !== req.user._id.toString()) {
+    res.status(401)
+    throw new Error('Permission Denied')
+  }
+  res.status(200).json(ticket)
+})
+
 // @desc Create new user ticket
 // @route /api/tickets/
 // @access Private
@@ -43,4 +66,5 @@ const createTicket = asyncHandler(async (req, res) => {
 module.exports = {
   getTickets,
   createTicket,
+  getTicket,
 }
