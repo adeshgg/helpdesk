@@ -89,9 +89,40 @@ const deleteTicket = asyncHandler(async (req, res) => {
   res.status(200).json({ success: true })
 })
 
+// @desc update ticket by id
+// @route /api/tickets/:id
+// @access Private
+const updateTicket = asyncHandler(async (req, res) => {
+  if (!req.user) {
+    res.status(401)
+    throw new Error('User not Found')
+  }
+
+  const ticket = await Ticket.findById(req.params.id)
+
+  if (!ticket) {
+    res.status(404)
+    throw new Error('Ticket Not Found')
+  }
+
+  if (ticket.user.toString() !== req.user._id.toString()) {
+    res.status(401)
+    throw new Error('Permission Denied')
+  }
+
+  const updatedTicket = await Ticket.findByIdAndUpdate(
+    req.params.id,
+    req.body,
+    { new: true } // the 3rd argument, {new : true} is the options object, that says : If there is now such ticket create it
+  )
+
+  res.status(200).json(updatedTicket)
+})
+
 module.exports = {
   getTickets,
   createTicket,
   getTicket,
   deleteTicket,
+  updateTicket,
 }
