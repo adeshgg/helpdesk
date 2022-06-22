@@ -63,8 +63,35 @@ const createTicket = asyncHandler(async (req, res) => {
   res.status(201).json(ticket)
 })
 
+// @desc Delete ticket by id
+// @route /api/tickets/:id
+// @access Private
+const deleteTicket = asyncHandler(async (req, res) => {
+  if (!req.user) {
+    res.status(401)
+    throw new Error('User not Found')
+  }
+
+  const ticket = await Ticket.findById(req.params.id)
+
+  if (!ticket) {
+    res.status(404)
+    throw new Error('Ticket Not Found')
+  }
+
+  if (ticket.user.toString() !== req.user._id.toString()) {
+    res.status(401)
+    throw new Error('Permission Denied')
+  }
+
+  await ticket.remove()
+
+  res.status(200).json({ success: true })
+})
+
 module.exports = {
   getTickets,
   createTicket,
   getTicket,
+  deleteTicket,
 }
