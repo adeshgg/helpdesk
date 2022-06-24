@@ -5,11 +5,20 @@ import { toast } from 'react-toastify'
 import { closeTicket, getTicket } from '../features/tickets/ticketSlice'
 import Spinner from '../components/Spinner'
 import BackButton from '../components/BackButton'
+import { getNotes, reset as notesReset } from '../features/notes/noteSlice'
+import NoteItem from '../components/NoteItem'
 
 export default function Ticket() {
   const { ticket, isLoading, isSuccessful, isError, message } = useSelector(
     state => state.ticket
   )
+  const {
+    notes,
+    isLoading: notesIsLoading,
+    isSuccess,
+    isError: notesIsError,
+    message: notesIsMessage,
+  } = useSelector(state => state.note)
 
   const { ticketId } = useParams()
   const dispatch = useDispatch()
@@ -21,6 +30,7 @@ export default function Ticket() {
     }
 
     dispatch(getTicket(ticketId))
+    dispatch(getNotes(ticketId))
   }, [isError, dispatch, ticketId])
 
   const handleTicketClose = () => {
@@ -29,7 +39,7 @@ export default function Ticket() {
     navigate('/tickets')
   }
 
-  if (isLoading) {
+  if (isLoading || notesIsLoading) {
     return <Spinner />
   }
 
@@ -52,7 +62,12 @@ export default function Ticket() {
           <h3>Description of the issue</h3>
           <p>{ticket.description}</p>
         </div>
+        <h2>Notes</h2>
       </header>
+
+      {notes.map(note => (
+        <NoteItem key={note._id} note={note} />
+      ))}
       {ticket.status !== 'close' && (
         <button
           onClick={handleTicketClose}
