@@ -31,6 +31,26 @@ export const createTicket = createAsyncThunk(
   }
 )
 
+export const getTickets = createAsyncThunk(
+  'tickets/getAll',
+  async (_, thunkAPI) => {
+    try {
+      // to grab the user token (since we need to send it, as this is a protected route)
+      // Use the getState() on the thunkAPI object
+      const token = thunkAPI.getState().auth.user.token
+      return await ticketService.getTickets(token)
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString()
+      return thunkAPI.rejectWithValue(message)
+    }
+  }
+)
+
 export const ticketSlice = createSlice({
   name: 'ticket',
   initialState,
