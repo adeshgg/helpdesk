@@ -37,7 +37,22 @@ export const ticketSlice = createSlice({
   reducers: {
     reset: state => initialState,
   },
-  extraReducers: builder => {},
+  extraReducers: builder => {
+    builder
+      .addCase(createTicket.pending, state => {
+        state.isLoading = true
+      })
+      .addCase(createTicket.fulfilled, (state, action) => {
+        state.isSuccessful = true
+        state.isLoading = false
+        state.ticket = action.payload
+      })
+      .addCase(createTicket.rejected, (state, action) => {
+        state.isLoading = false
+        state.isError = true
+        state.message = action.payload
+      })
+  },
 })
 
 export const { reset } = ticketSlice.actions

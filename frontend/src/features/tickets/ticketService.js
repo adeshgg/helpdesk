@@ -14,6 +14,8 @@ const createTicket = async (ticketData, token) => {
   return response.data
 }
 
-export default ticketService = {
+const ticketService = {
   createTicket,
 }
+
+export default ticketService

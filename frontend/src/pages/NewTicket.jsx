@@ -1,14 +1,44 @@
+import { useEffect } from 'react'
 import { useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { createTicket, reset } from '../features/tickets/ticketSlice'
+import { toast } from 'react-toastify'
+import Spinner from '../components/Spinner'
 
 export default function NewTicket() {
   const { user } = useSelector(state => state.auth)
+  const { isLoading, isError, isSuccessful, message } = useSelector(
+    state => state.ticket
+  )
+
   const [product, setProduct] = useState('iPhone')
   const [description, setDescription] = useState('')
 
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    if (isError) {
+      toast.error(message)
+    }
+    if (isSuccessful) {
+      toast.success('Ticket Created')
+      navigate('/tickets')
+    }
+
+    dispatch(reset())
+  }, [dispatch, isError, isSuccessful, navigate, message])
+
   const onSubmit = e => {
     e.preventDefault()
+    dispatch(createTicket({ product, description }))
   }
+
+  if (isLoading) {
+    return <Spinner />
+  }
+
   return (
     <>
       <section className='heading'>
