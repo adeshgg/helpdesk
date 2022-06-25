@@ -7,8 +7,8 @@ export default function NoteItem({ note }) {
     <div
       className='note'
       style={{
-        backgroundColor: user.isAdmin ? 'rgba(0,0,0,0.7)' : '#fff',
-        color: user.isAdmin ? '#fff' : '#000',
+        backgroundColor: user.isAdmin === true ? 'rgba(0,0,0,0.7)' : '#fff',
+        color: user.isAdmin === true ? '#fff' : '#000',
       }}
     >
       <h4>
