@@ -84,6 +84,31 @@ const getMe = asyncHandler(async (req, res) => {
   res.status(200).json(user)
 })
 
+// @desc Return user by id
+// @route /api/users/:id
+// @access Private
+const getUser = asyncHandler(async (req, res) => {
+  if (!req.user) {
+    res.status(401)
+    throw new Error('User not Found')
+  }
+
+  const user = await User.findById(req.params.id)
+
+  if (!user) {
+    res.status(404)
+    throw new Error('User Not Found')
+  }
+
+  res.status(200).json({
+    _id: user._id,
+    name: user.name,
+    email: user.email,
+    isAdmin: user.isAdmin,
+    token: generateToken(user._id),
+  })
+})
+
 const generateToken = id => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: '30d',
@@ -94,4 +119,5 @@ module.exports = {
   registerUser,
   loginUser,
   getMe,
+  getUser,
 }
